@@ -13,7 +13,7 @@
 ## 🚀 Live Demo
 
 Run XCAD 2D directly in your browser with zero setup:  
-👉 **[Launch XCAD 2D Online](https://<your-username>.github.io/xcad-2d/)** *(via GitHub Pages)*
+👉 **[Launch XCAD 2D Online](https://ksjamwal4268.github.io/xcad-2d/)** *(Live on GitHub Pages)*
 
 Or run locally by double-clicking `index.html`.
 
