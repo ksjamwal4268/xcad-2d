@@ -1,0 +1,1226 @@
+/* AutoCAD 2026 2D Drafting & Practice Suite - Ultra-Authentic Theme */
+:root {
+  --cad-bg: #212830;
+  --cad-canvas-bg: #1c1f24;
+  --cad-ribbon-bg: #272d37;
+  --cad-ribbon-border: #161a20;
+  --cad-tab-active: #1f242c;
+  --cad-text: #e1e4e8;
+  --cad-text-muted: #8b949e;
+  --cad-accent: #0078d4;
+  --cad-accent-hover: #1084d8;
+  --cad-btn-hover: #333b47;
+  --cad-border: #3b4350;
+  --cad-cmd-bg: #14171c;
+  --cad-status-bg: #1a1f26;
+  --cad-grid-major: #2c333e;
+  --cad-grid-minor: #232831;
+  --cad-axis-x: #e04444;
+  --cad-axis-y: #3eb54e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  background: var(--cad-bg);
+  color: var(--cad-text);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Top Title Bar & Quick Access Toolbar --- */
+#top-bar {
+  height: 36px;
+  background: #171b21;
+  border-bottom: 1px solid #101317;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 12px;
+  z-index: 100;
+}
+
+.acad-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #ff3333;
+}
+
+.acad-badge {
+  background: #e51400;
+  color: #fff;
+  font-weight: 900;
+  font-size: 15px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: -0.5px;
+  box-shadow: 0 2px 4px rgba(229, 20, 0, 0.4);
+}
+
+.doc-title {
+  color: #9da5b4;
+  font-size: 11px;
+}
+
+.quick-tools {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.q-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #cbd5e1;
+  padding: 4px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.q-btn:hover {
+  background: #2a313d;
+  border-color: #3f4756;
+}
+
+.btn-fullscreen {
+  background: #0078d4;
+  color: #ffffff;
+  border: 1px solid #38bdf8;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(0, 120, 212, 0.4);
+  transition: all 0.15s;
+}
+
+.btn-fullscreen:hover {
+  background: #1084d8;
+  box-shadow: 0 3px 8px rgba(0, 120, 212, 0.6);
+}
+
+/* --- Ribbon Tabs & Panels --- */
+#ribbon {
+  background: var(--cad-ribbon-bg);
+  border-bottom: 2px solid #161a20;
+  display: flex;
+  flex-direction: column;
+  transition: max-height 0.2s ease;
+}
+
+#ribbon.collapsed .ribbon-panel-container {
+  display: none;
+}
+
+.ribbon-tabs {
+  display: flex;
+  background: #1f252d;
+  border-bottom: 1px solid #15181d;
+  padding-left: 6px;
+  position: relative;
+}
+
+.ribbon-tab {
+  padding: 6px 14px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #9da5b4;
+  cursor: pointer;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  margin-top: 2px;
+}
+
+.ribbon-tab.active {
+  background: var(--cad-ribbon-bg);
+  color: #ffffff;
+  border-color: #161a20 #161a20 transparent #161a20;
+}
+
+.ribbon-tab:hover:not(.active) {
+  background: #28303a;
+  color: #e2e8f0;
+}
+
+.ribbon-panel-container {
+  display: flex;
+  align-items: stretch;
+  height: 96px;
+  padding: 4px 6px;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.ribbon-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 4px 6px;
+  min-width: 70px;
+}
+
+.panel-content {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex: 1;
+}
+
+.panel-title {
+  text-align: center;
+  font-size: 9.5px;
+  color: #7b8493;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-top: 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Ribbon Buttons */
+.tool-btn-large {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #e2e8f0;
+  cursor: pointer;
+  font-size: 11px;
+  gap: 4px;
+  min-width: 46px;
+}
+
+.tool-btn-large svg {
+  width: 22px;
+  height: 22px;
+  stroke: #72a7e7;
+  stroke-width: 1.8;
+  fill: none;
+}
+
+.tool-btn-large:hover, .tool-btn-small:hover {
+  background: var(--cad-btn-hover);
+  border-color: #4b5563;
+  color: #ffffff;
+}
+
+.tool-btn-large.active, .tool-btn-small.active {
+  background: #0078d4;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+.tool-btn-large.active svg, .tool-btn-small.active svg {
+  stroke: #ffffff;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.tool-grid-modify {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+
+.tool-btn-small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #cbd5e1;
+  font-size: 10.5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tool-btn-small svg {
+  width: 14px;
+  height: 14px;
+  stroke: #72a7e7;
+  stroke-width: 1.8;
+  fill: none;
+}
+
+/* Layer & Property Pickers */
+.layer-picker, .color-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  min-width: 120px;
+}
+
+.cad-select {
+  background: #191d24;
+  color: #e2e8f0;
+  border: 1px solid #3c4452;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 11px;
+  outline: none;
+  cursor: pointer;
+}
+
+.cad-select:hover {
+  border-color: var(--cad-accent);
+}
+
+/* --- Main CAD Viewport Canvas --- */
+#viewport-container {
+  flex: 1;
+  position: relative;
+  background: var(--cad-canvas-bg);
+  overflow: hidden;
+  cursor: crosshair; /* Visible OS crosshair fallback so cursor never vanishes */
+}
+
+#cad-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Dynamic Input Box near cursor */
+#dyn-input {
+  position: absolute;
+  display: none;
+  background: rgba(22, 27, 34, 0.92);
+  border: 1px solid #4a5568;
+  border-radius: 3px;
+  color: #ffffff;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  font-family: "Courier New", monospace;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+/* AutoCAD ViewCube (Top 2D View Indicator) */
+#viewcube {
+  position: absolute;
+  top: 16px;
+  right: 68px;
+  width: 70px;
+  height: 70px;
+  background: rgba(33, 40, 48, 0.88);
+  border: 1px solid #4a5568;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9da5b4;
+  font-size: 10px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+#viewcube .cube-inner {
+  width: 44px;
+  height: 44px;
+  background: #2b3440;
+  border: 1px solid #525f73;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#viewcube .compass-n {
+  color: #38bdf8;
+  font-size: 9px;
+  position: absolute;
+  top: 2px;
+}
+
+/* AutoCAD Floating Navigation Bar on Right */
+#nav-bar {
+  position: absolute;
+  top: 100px;
+  right: 18px;
+  background: rgba(25, 30, 38, 0.9);
+  border: 1px solid #3c4452;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  padding: 3px;
+  gap: 3px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  z-index: 40;
+}
+
+.nav-bar-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #cbd5e1;
+  padding: 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-bar-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: #9da5b4;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+.nav-bar-btn:hover {
+  background: #333b47;
+  border-color: #4b5563;
+}
+
+.nav-bar-btn:hover svg {
+  stroke: #ffffff;
+}
+
+/* --- AutoCAD Layout Tabs Bar (Model / Layout1 / Layout2) --- */
+#layout-tabs-bar {
+  height: 22px;
+  background: #191e26;
+  border-top: 1px solid #14171d;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-size: 11px;
+}
+
+.layout-tab {
+  padding: 2px 12px;
+  background: #242b36;
+  color: #8b949e;
+  border: 1px solid #2e3745;
+  border-bottom: none;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  cursor: pointer;
+  font-size: 10.5px;
+  margin-right: 2px;
+}
+
+.layout-tab.active {
+  background: #1c1f24;
+  color: #ffffff;
+  font-weight: 600;
+  border-color: #3b4556;
+}
+
+/* --- AutoCAD Command Line Prompt --- */
+#command-container {
+  position: absolute;
+  bottom: 26px;
+  left: 20px;
+  right: 20px;
+  background: rgba(20, 23, 28, 0.95);
+  border: 1px solid #3c4452;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  font-family: "Courier New", Consolas, monospace;
+}
+
+#cmd-history {
+  max-height: 52px;
+  overflow-y: auto;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #8b949e;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.cmd-history-line {
+  white-space: pre-wrap;
+}
+
+#cmd-input-row {
+  display: flex;
+  align-items: center;
+  background: #14171c;
+  border-top: 1px solid #282f3a;
+  padding: 4px 8px;
+  position: relative;
+}
+
+.cmd-drag-handle {
+  width: 6px;
+  height: 14px;
+  border-left: 2px dotted #4b5563;
+  margin-right: 6px;
+  cursor: move;
+}
+
+.cmd-prompt-label {
+  color: #38bdf8;
+  font-weight: 700;
+  font-size: 12.5px;
+  margin-right: 8px;
+}
+
+#cmd-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f1f5f9;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+/* Autocomplete suggestion popup above command prompt */
+#cmd-autocomplete {
+  position: absolute;
+  bottom: 100%;
+  left: 30px;
+  background: #1a202c;
+  border: 1px solid #4a5568;
+  border-radius: 4px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 110;
+  min-width: 140px;
+  overflow: hidden;
+}
+
+.cmd-suggestion-item {
+  padding: 4px 10px;
+  font-size: 11.5px;
+  color: #cbd5e1;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cmd-suggestion-item:hover, .cmd-suggestion-item.active {
+  background: #0078d4;
+  color: #ffffff;
+}
+
+/* --- Status Bar (AutoCAD Drafting Aids F1-F12) --- */
+#status-bar {
+  height: 28px;
+  background: var(--cad-status-bg);
+  border-top: 1px solid #14171c;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  font-size: 11px;
+  z-index: 20;
+}
+
+.status-left, .status-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.coord-display {
+  font-family: "Courier New", monospace;
+  color: #cbd5e1;
+  padding: 2px 8px;
+  background: #13161c;
+  border-radius: 3px;
+  font-size: 11px;
+  margin-right: 6px;
+  border: 1px solid #2b3340;
+}
+
+.draft-pill {
+  background: #252c38;
+  border: 1px solid #394252;
+  color: #94a3b8;
+  padding: 2px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.12s;
+}
+
+.draft-pill:hover {
+  background: #313a49;
+  color: #ffffff;
+}
+
+.draft-pill.active {
+  background: #0078d4;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+.clean-screen-pill {
+  background: #1c222b;
+  border: 1px solid #3a4556;
+  color: #38bdf8;
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.clean-screen-pill:hover {
+  background: #0078d4;
+  color: #fff;
+}
+
+.clean-screen-pill.active {
+  background: #0078d4;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+/* AutoCAD Clean Screen Mode (CTRL+0) */
+body.clean-screen-on #top-bar,
+body.clean-screen-on #ribbon {
+  display: none !important;
+}
+
+body.clean-screen-on #command-container {
+  bottom: 24px;
+}
+
+/* Layer Manager Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-card {
+  background: #212830;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  width: 580px;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: #171c23;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid #374151;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modal-close:hover { color: #fff; }
+
+.modal-body {
+  padding: 14px;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.layer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.layer-table th, .layer-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #2d3748;
+  text-align: left;
+}
+
+.layer-table th {
+  background: #1a202c;
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.color-bullet {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid #4a5568;
+  vertical-align: middle;
+}
+
+.btn-small-action {
+  background: #2b3340;
+  border: 1px solid #444f63;
+  color: #cbd5e1;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.btn-small-action:hover {
+  background: #394455;
+  color: #fff;
+}
+
+/* =================================================================
+   XCAD 2D High-Tech Styling, Floating Palettes & AI Overlays
+   ================================================================= */
+
+/* XCAD 2D Brand Logo */
+.acad-badge {
+  background: linear-gradient(135deg, #7c3aed, #2563eb) !important;
+  color: #ffffff;
+  font-weight: 900;
+  border-radius: 4px;
+  padding: 2px 7px;
+  letter-spacing: 0.5px;
+}
+
+/* Floating Tool Palettes (Count, Parameters, Insights, LISP) */
+.xcad-floating-palette {
+  position: absolute;
+  top: 130px;
+  right: 60px;
+  width: 380px;
+  max-height: 520px;
+  background: rgba(22, 27, 34, 0.96);
+  border: 1px solid #3b4556;
+  border-radius: 6px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
+  display: none;
+  flex-direction: column;
+  z-index: 150;
+  backdrop-filter: blur(8px);
+}
+
+.palette-header {
+  background: #171c24;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #2d3748;
+  font-size: 12px;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.palette-body {
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 11.5px;
+}
+
+.palette-footer {
+  padding: 8px 10px;
+  border-top: 1px solid #2d3748;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #151920;
+}
+
+.badge-ok {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.badge-warn {
+  background: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.btn-micro {
+  background: #232a36;
+  border: 1px solid #3d4758;
+  color: #cbd5e1;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.btn-micro:hover {
+  background: #0078d4;
+  color: #fff;
+}
+
+.cad-cell-input {
+  background: #14171d;
+  border: 1px solid #374151;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  width: 90px;
+  outline: none;
+}
+
+.cad-cell-input:focus {
+  border-color: #38bdf8;
+}
+
+/* AutoLISP Console */
+.lisp-editor {
+  width: 100%;
+  height: 90px;
+  background: #12151b;
+  border: 1px solid #2e3846;
+  border-radius: 4px;
+  color: #38bdf8;
+  font-family: "Courier New", monospace;
+  font-size: 11.5px;
+  padding: 6px;
+  box-sizing: border-box;
+  resize: vertical;
+  outline: none;
+}
+
+.lisp-output-box {
+  background: #0e1116;
+  border: 1px solid #262e3a;
+  border-radius: 4px;
+  height: 110px;
+  overflow-y: auto;
+  font-family: "Courier New", monospace;
+  font-size: 10.5px;
+  color: #94a3b8;
+  padding: 6px;
+  margin-top: 8px;
+  white-space: pre-wrap;
+}
+
+/* Activity Insights Log */
+.insight-log-item {
+  padding: 6px 4px;
+  border-bottom: 1px solid #232b36;
+  font-size: 11px;
+  color: #cbd5e1;
+}
+
+.insight-time {
+  color: #64748b;
+  font-size: 9.5px;
+  margin-right: 6px;
+}
+
+.insight-action {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+/* =================================================================
+   User-Friendly Enhancements (Templates, Quick Props, Help & Pills)
+   ================================================================= */
+
+.btn-top-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #232b38;
+  border: 1px solid #374151;
+  color: #f1f5f9;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-top-action:hover {
+  background: #0078d4;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+/* Command Action Pills */
+.cmd-action-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 8px;
+  flex-wrap: nowrap;
+}
+
+.cmd-action-pill {
+  background: #232a35;
+  border: 1px solid #3b4554;
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.cmd-action-pill:hover {
+  background: #334155;
+  color: #ffffff;
+  border-color: #64748b;
+}
+.cmd-action-pill.pill-primary {
+  background: #0078d4;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+.cmd-action-pill.pill-success {
+  background: #166534;
+  border-color: #22c55e;
+  color: #ffffff;
+}
+.cmd-action-pill.pill-danger {
+  background: #991b1b;
+  border-color: #ef4444;
+  color: #ffffff;
+}
+.cmd-action-pill.pill-quick {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+}
+.cmd-action-pill.pill-quick:hover {
+  background: #38bdf8;
+  color: #0f172a;
+}
+.cmd-action-pill.pill-accent {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: #f59e0b;
+  color: #fbbf24;
+}
+.cmd-action-pill.pill-help {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: #a855f7;
+  color: #c084fc;
+}
+.cmd-action-pill.pill-badge {
+  background: #1e293b;
+  border-color: #475569;
+  color: #94a3b8;
+  cursor: default;
+}
+
+/* Floating Quick Properties Card */
+.quick-props-card {
+  position: absolute;
+  bottom: 48px;
+  right: 56px;
+  width: 250px;
+  background: rgba(23, 26, 32, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid #38bdf8;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  display: none;
+  flex-direction: column;
+  z-index: 100;
+  overflow: hidden;
+  animation: qpSlideIn 0.2s ease-out;
+}
+
+@keyframes qpSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.qp-header {
+  background: #1e2530;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #2e3846;
+}
+
+.qp-title-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.qp-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.qp-info {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.qp-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 12px;
+}
+.qp-close-btn:hover { color: #f1f5f9; }
+
+.qp-body {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qp-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #cbd5e1;
+}
+
+.qp-select {
+  background: #14181f;
+  border: 1px solid #374151;
+  color: #f1f5f9;
+  font-size: 11px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  outline: none;
+}
+
+.qp-color-palette {
+  display: flex;
+  gap: 5px;
+}
+
+.qp-color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+.qp-color-dot:hover {
+  transform: scale(1.25);
+}
+
+.qp-actions-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.btn-qp-action {
+  flex: 1;
+  background: #27313f;
+  border: 1px solid #3b4758;
+  color: #e2e8f0;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 4px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-qp-action:hover {
+  background: #0078d4;
+  color: #ffffff;
+}
+.btn-qp-action.qp-action-delete:hover {
+  background: #dc2626;
+  border-color: #ef4444;
+}
+
+/* Template Grid in Modal */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.template-card {
+  background: #1c222c;
+  border: 1px solid #313d4f;
+  border-radius: 6px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.template-card:hover {
+  border-color: #38bdf8;
+  background: #222b38;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.template-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.template-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 6px;
+}
+
+.template-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+  flex: 1;
+  margin-bottom: 12px;
+}
+
+.template-btn {
+  background: #0078d4;
+  border: none;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.template-card:hover .template-btn {
+  background: #0284c7;
+}
+
+/* Beginner Tip Banner in Status Bar */
+.beginner-tip-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid #334155;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  color: #38bdf8;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.beginner-tip-banner:hover {
+  background: #334155;
+  color: #f8fafc;
+}
+
+.tip-next-btn {
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* Help Grid & Shortcut Tables */
+.help-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.help-card {
+  background: #181d24;
+  border: 1px solid #2a3442;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.help-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.help-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+.help-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid #232b36;
+  color: #cbd5e1;
+}
+.help-table kbd {
+  background: #293544;
+  border: 1px solid #475569;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #f1f5f9;
+}

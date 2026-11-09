@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs and binaries
+*.exe
+*.obj
+*.pdb
+*.zip
+IconBuilder2D.exe
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Editor / IDE configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Log files
+*.log

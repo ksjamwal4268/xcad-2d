@@ -1,0 +1,29 @@
+{
+  "name": "xcad-2d",
+  "version": "1.0.0",
+  "description": "A high-performance, browser-based, zero-dependency 2D Computer-Aided Design (CAD) drafting system with authentic AutoCAD workflows, command-line interface, and engineering graphics curriculum engine.",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "test": "node test-runner-2d.js"
+  },
+  "keywords": [
+    "cad",
+    "autocad",
+    "autocad-2d",
+    "engineering-drawing",
+    "html5-canvas",
+    "dxf",
+    "autolisp",
+    "technical-drawing",
+    "bmet21",
+    "open-source"
+  ],
+  "author": "XCAD Team",
+  "license": "MIT",
+  "homepage": "https://github.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com"
+  }
+}

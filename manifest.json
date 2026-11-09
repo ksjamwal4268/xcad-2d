@@ -1,0 +1,17 @@
+{
+  "name": "XCAD 2D - Professional 2D Drafting Suite",
+  "short_name": "XCAD 2D",
+  "description": "AutoCAD 2026 Compatible 2D Drafting, AI Smart Blocks, GIS & Site Planning Suite",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#171a20",
+  "theme_color": "#171a20",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XCAD 2D - Professional 2D Drafting, AI Smart Blocks & GIS Suite</title>
+  <meta name="theme-color" content="#171a20">
+  <meta name="description" content="XCAD 2D Professional Drafting & AI Smart Blocks Suite">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/x-icon" href="app_icon.ico">
+  <link rel="icon" type="image/png" href="app_icon.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/cad.css">
+</head>
+<body>
+
+  <!-- Top Title Bar & Quick Access Toolbar -->
+  <header id="top-bar">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div class="acad-logo">
+        <span class="acad-badge">XCAD</span>
+        <span style="font-weight: 700; color: #f1f5f9; letter-spacing: 0.3px;">XCAD 2D</span>
+        <span style="font-size: 10px; color: #38bdf8; margin-left: 2px;">v2026</span>
+      </div>
+      <div class="quick-tools">
+        <button class="q-btn" title="New Drawing (CLEAR)" onclick="window.cadApp.commands.execute('NEW')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+        </button>
+        <button class="q-btn" title="Open Drawing" onclick="window.cadApp.loadProject()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+        <button class="q-btn" title="Save Drawing (SAVE)" onclick="window.cadApp.saveProject()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        </button>
+        <button class="q-btn" title="Export AutoCAD standard DXF" style="color: #38bdf8;" onclick="window.cadApp.exportDxf()">
+          <strong>DXF</strong>
+        </button>
+        <button class="q-btn" title="Export High-Res PNG Plot" onclick="window.cadApp.exportPng()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        </button>
+        <button class="q-btn" title="Undo (CTRL+Z or U)" onclick="window.cadApp.commands.execute('U')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>
+        </button>
+        <button class="q-btn" title="Redo (CTRL+Y or REDO)" onclick="window.cadApp.commands.execute('REDO')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 7v6h-6"></path><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"></path></svg>
+        </button>
+      </div>
+    </div>
+    <div class="doc-title">Drawing1.dwg · [XCAD 2D Drafting, Smart Blocks & GIS Workspace]</div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button id="btn-templates-header" class="btn-top-action" title="Load Ready-Made Engineering Templates (2BHK, Civil Site, Mechanical)" onclick="window.cadApp.openTemplatesModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+        <span>📂 Templates</span>
+      </button>
+      <button id="btn-help-header" class="btn-top-action" title="Quick Start Guide & AutoCAD Shortcuts (? / F1)" onclick="window.cadApp.openHelpModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <span>❓ Help (F1)</span>
+      </button>
+      <button id="btn-fullscreen-header" class="btn-fullscreen" title="Toggle Clean Screen Fullscreen (CTRL+0 / F11)" onclick="window.cadApp.toggleFullscreen()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+        <span>Fullscreen</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- XCAD 2D Ribbon Navigation -->
+  <nav id="ribbon">
+    <div class="ribbon-tabs">
+      <div class="ribbon-tab active" data-tab="home">Home</div>
+      <div class="ribbon-tab" data-tab="ai-blocks">AI & Smart Blocks</div>
+      <div class="ribbon-tab" data-tab="annotate">Annotate</div>
+      <div class="ribbon-tab" data-tab="parametric">Parametric</div>
+      <div class="ribbon-tab" data-tab="gis">GIS & Site</div>
+      <div class="ribbon-tab" data-tab="review">Review & Trace</div>
+      <div class="ribbon-tab" data-tab="automation">Automation</div>
+      <div class="ribbon-tab" data-tab="eng-graphics" style="color: #f59e0b; font-weight: 600;">Engineering Graphics (BMET21)</div>
+    </div>
+
+    <div class="ribbon-panel-container">
+      <!-- 1. Home Panel Set -->
+      <div class="ribbon-group-set" data-panel="home" style="display: flex;">
+        <!-- Draw Panel -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" data-cmd="LINE" title="Line (L) - Straight line segments" onclick="window.cadApp.commands.startCommand('LINE')">
+              <svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="20" y2="4"></line></svg>
+              <span>Line</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="POLYLINE" title="Polyline (PL) - 2D connected segments" onclick="window.cadApp.commands.startCommand('POLYLINE')">
+              <svg viewBox="0 0 24 24"><polyline points="4,20 10,8 16,14 20,4"></polyline></svg>
+              <span>Pline</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="ARC" title="3-Point Arc (A)" onclick="window.cadApp.commands.startCommand('ARC')">
+              <svg viewBox="0 0 24 24"><path d="M4 19 A 11 11 0 0 1 20 19"></path><circle cx="4" cy="19" r="1.5" fill="#38bdf8"></circle><circle cx="12" cy="8" r="1.5" fill="#38bdf8"></circle><circle cx="20" cy="19" r="1.5" fill="#38bdf8"></circle></svg>
+              <span>Arc</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="CIRCLE" title="Circle (C) - Center & Radius" onclick="window.cadApp.commands.startCommand('CIRCLE')">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg>
+              <span>Circle</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="RECTANGLE" title="Rectangle (REC)" onclick="window.cadApp.commands.startCommand('RECTANGLE')">
+              <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14"></rect></svg>
+              <span>Rect</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="HATCH" title="Hatch (H) - Boundary-free & path patterns" onclick="window.cadApp.commands.startCommand('HATCH')">
+              <svg viewBox="0 0 24 24"><line x1="4" y1="4" x2="20" y2="20"></line><line x1="4" y1="12" x2="12" y2="20"></line><line x1="12" y1="4" x2="20" y2="12"></line><rect x="3" y="3" width="18" height="18"></rect></svg>
+              <span>Hatch</span>
+            </button>
+          </div>
+          <div class="panel-title">Draw</div>
+        </div>
+
+        <!-- Modify Panel -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <div class="tool-grid-modify">
+              <button class="tool-btn-small" data-cmd="TRIM" title="Trim (TR) - Shift to Extend" onclick="window.cadApp.commands.startCommand('TRIM')">
+                <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line></svg>
+                <span>Trim</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="MOVE" title="Move (M)" onclick="window.cadApp.commands.startCommand('MOVE')">
+                <svg viewBox="0 0 24 24"><polyline points="5 9 2 12 5 15"></polyline><polyline points="9 5 12 2 15 5"></polyline><polyline points="15 19 12 22 9 19"></polyline><polyline points="19 9 22 12 19 15"></polyline><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line></svg>
+                <span>Move</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="COPY" title="Copy (CO)" onclick="window.cadApp.commands.startCommand('COPY')">
+                <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="ROTATE" title="Rotate (RO)" onclick="window.cadApp.commands.startCommand('ROTATE')">
+                <svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                <span>Rotate</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="SCALE" title="Scale (SC)" onclick="window.cadApp.commands.startCommand('SCALE')">
+                <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                <span>Scale</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="MIRROR" title="Mirror (MI)" onclick="window.cadApp.commands.startCommand('MIRROR')">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22" stroke-dasharray="2,2"></line><polygon points="4,7 10,7 10,17 4,17"></polygon><polygon points="20,7 14,7 14,17 20,17"></polygon></svg>
+                <span>Mirror</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="FILLET" title="Fillet (F)" onclick="window.cadApp.commands.startCommand('FILLET')">
+                <svg viewBox="0 0 24 24"><path d="M4 20 L12 20 A8 8 0 0 0 20 12 L20 4"></path></svg>
+                <span>Fillet</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="OFFSET" title="Offset (O)" onclick="window.cadApp.commands.startCommand('OFFSET')">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4"></circle></svg>
+                <span>Offset</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="EXPLODE" title="Explode (X)" onclick="window.cadApp.commands.execute('X')">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line></svg>
+                <span>Explode</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="JOIN" title="Join (J)" onclick="window.cadApp.commands.execute('J')">
+                <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span>Join</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="ERASE" title="Erase (E)" onclick="window.cadApp.commands.startCommand('ERASE')">
+                <svg viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                <span>Erase</span>
+              </button>
+              <button class="tool-btn-small" title="Zoom Extents (Z)" onclick="window.cadApp.commands.zoomExtents()">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>Extents</span>
+              </button>
+            </div>
+          </div>
+          <div class="panel-title">Modify</div>
+        </div>
+
+        <!-- Quick Blocks Panel in Home Tab -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <div class="tool-grid">
+              <button class="tool-btn-small" title="Insert Door 36'' (I)" onclick="window.cadApp.commands.insertBlock('DOOR_36')">
+                <svg viewBox="0 0 24 24"><path d="M4 3h16v18H4z" fill="none" stroke="currentColor"></path><path d="M4 21 A 14 14 0 0 1 18 7" stroke="#38bdf8"></path><line x1="4" y1="21" x2="4" y2="7" stroke="#38bdf8"></line></svg>
+                <span>Door</span>
+              </button>
+              <button class="tool-btn-small" title="Insert Window 48'' (I)" onclick="window.cadApp.commands.insertBlock('WINDOW_48')">
+                <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" fill="none" stroke="currentColor"></rect><line x1="12" y1="6" x2="12" y2="18" stroke="#38bdf8"></line><line x1="3" y1="12" x2="21" y2="12" stroke="#38bdf8"></line></svg>
+                <span>Window</span>
+              </button>
+              <button class="tool-btn-small" title="Insert Desk & Chair (I)" onclick="window.cadApp.commands.insertBlock('DESK_60X30')">
+                <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="10" rx="1" stroke="currentColor"></rect><circle cx="12" cy="18" r="3" stroke="#38bdf8"></circle></svg>
+                <span>Desk</span>
+              </button>
+              <button class="tool-btn-small" title="Insert Column 12x12 (I)" onclick="window.cadApp.commands.insertBlock('COLUMN_12X12')">
+                <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" stroke="currentColor"></rect><line x1="6" y1="6" x2="18" y2="18" stroke="#38bdf8"></line><line x1="6" y1="18" x2="18" y2="6" stroke="#38bdf8"></line></svg>
+                <span>Column</span>
+              </button>
+              <button class="tool-btn-small" title="Insert Toilet Fixture (I)" onclick="window.cadApp.commands.insertBlock('TOILET')">
+                <svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="6" stroke="currentColor"></rect><ellipse cx="12" cy="15" rx="5" ry="6" stroke="#38bdf8"></ellipse></svg>
+                <span>Toilet</span>
+              </button>
+              <button class="tool-btn-small" title="AI Smart Blocks Search & Convert (BCONVERT)" onclick="window.cadApp.commands.startCommand('BCONVERT')">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="#e040fb"></circle><path d="M12 8v8M8 12h8" stroke="#e040fb"></path></svg>
+                <span>AI Blocks</span>
+              </button>
+            </div>
+          </div>
+          <div class="panel-title">Smart Blocks</div>
+        </div>
+
+        <!-- Annotation Panel -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" data-cmd="DIMENSION" title="Smart Dimension (DIM)" onclick="window.cadApp.commands.startCommand('DIMENSION')">
+              <svg viewBox="0 0 24 24"><path d="M21 6H3"></path><path d="M3 3v6"></path><path d="M21 3v6"></path><path d="M10 18l2 2 2-2"></path><line x1="12" y1="12" x2="12" y2="20"></line></svg>
+              <span>Dim</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="MLEADER" title="Multi-Leader (MLEADER)" onclick="window.cadApp.commands.startCommand('MLEADER')">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="14" y2="10"></line><line x1="14" y1="10" x2="20" y2="10"></line><circle cx="5" cy="19" r="1.5" fill="#38bdf8"></circle></svg>
+              <span>Leader</span>
+            </button>
+          </div>
+          <div class="panel-title">Annotation</div>
+        </div>
+
+        <!-- Layers Panel -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <div class="layer-picker">
+              <button class="tool-btn-small" style="width: 100%; justify-content: center; background: #1c222b;" onclick="window.cadApp.openLayerManager()">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                <span>Layers</span>
+              </button>
+              <select id="active-layer-select" class="cad-select" title="Active Drafting Layer"></select>
+            </div>
+          </div>
+          <div class="panel-title">Layers</div>
+        </div>
+
+        <!-- Utilities Panel -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <div class="tool-grid">
+              <button class="tool-btn-small" id="btn-quick-measure" title="Quick Measure (QM) - Neon Proximity Caliper" onclick="window.cadApp.commands.toggleQuickMeasure()">
+                <svg viewBox="0 0 24 24"><path d="M2 12h20M7 8v8M17 8v8M12 10v4"></path></svg>
+                <span>Quick Meas.</span>
+              </button>
+              <button class="tool-btn-small" title="Distance (DI)" onclick="window.cadApp.commands.startCommand('DIST')">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="21" x2="21" y2="3"></line></svg>
+                <span>Dist (DI)</span>
+              </button>
+              <button class="tool-btn-small" title="Toggle Ortho (F8)" onclick="window.cadApp.toggleDraft('ortho')">
+                <svg viewBox="0 0 24 24"><path d="M4 20h16M4 4v16"></path></svg>
+                <span>Ortho</span>
+              </button>
+              <button class="tool-btn-small" title="Toggle Snap (F3)" onclick="window.cadApp.toggleDraft('osnap')">
+                <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12"></rect></svg>
+                <span>OSnap</span>
+              </button>
+            </div>
+          </div>
+          <div class="panel-title">Utilities</div>
+        </div>
+      </div>
+
+      <!-- 2. AI & Smart Blocks Panel Set -->
+      <div class="ribbon-group-set" data-panel="ai-blocks" style="display: none;">
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" data-cmd="BCONVERT" title="Smart Blocks: Search & Convert (BCONVERT) - Scans for identical raw linework and converts to blocks" onclick="window.cadApp.commands.startCommand('BCONVERT')">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><path d="M3 17l4 4 4-4"></path></svg>
+              <span>Search & Convert</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="BLOCKREPLACE" title="Smart Blocks: Replace (BLOCKREPLACE) - Batch swap blocks while preserving base points and attributes" onclick="window.cadApp.commands.startCommand('BLOCKREPLACE')">
+              <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              <span>Replace</span>
+            </button>
+            <button class="tool-btn-large" title="Intelligent Object Counting Palette (COUNT)" onclick="window.cadApp.toggleCountPalette()">
+              <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+              <span>Count Palette</span>
+            </button>
+            <button class="tool-btn-large" title="Insert Count Table in Model Space" onclick="window.xcadSmartBlocks.insertCountTable(60, 60)">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              <span>Insert Table</span>
+            </button>
+          </div>
+          <div class="panel-title">Smart Blocks AI</div>
+        </div>
+
+        <!-- Quick Architectural Insert Library -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <div class="tool-grid">
+              <button class="tool-btn-small" onclick="window.cadApp.commands.activeBlockToInsert='DOOR_36'; window.cadApp.commands.startCommand('INSERT')">
+                <span>🚪 Door 36"</span>
+              </button>
+              <button class="tool-btn-small" onclick="window.cadApp.commands.activeBlockToInsert='WINDOW_48'; window.cadApp.commands.startCommand('INSERT')">
+                <span>🪟 Window 48"</span>
+              </button>
+              <button class="tool-btn-small" onclick="window.cadApp.commands.activeBlockToInsert='DESK_60X30'; window.cadApp.commands.startCommand('INSERT')">
+                <span>🖥️ Desk 60x30</span>
+              </button>
+              <button class="tool-btn-small" onclick="window.cadApp.commands.activeBlockToInsert='COL_12X12'; window.cadApp.commands.startCommand('INSERT')">
+                <span>🏛️ Column 12"</span>
+              </button>
+            </div>
+          </div>
+          <div class="panel-title">Smart Library</div>
+        </div>
+      </div>
+
+      <!-- 3. Annotate Panel Set -->
+      <div class="ribbon-group-set" data-panel="annotate" style="display: none;">
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" data-cmd="DIMENSION" title="Smart Dimension" onclick="window.cadApp.commands.startCommand('DIMENSION')">
+              <svg viewBox="0 0 24 24"><path d="M21 6H3"></path><path d="M3 3v6"></path><path d="M21 3v6"></path></svg>
+              <span>Smart Dim</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="CENTERMARK" title="Center Mark (CENTERMARK)" onclick="window.cadApp.commands.startCommand('CENTERMARK')">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="1" x2="12" y2="23"></line><line x1="1" y1="12" x2="23" y2="12"></line></svg>
+              <span>Center Mark</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="CENTERLINE" title="Centerline (CENTERLINE)" onclick="window.cadApp.commands.startCommand('CENTERLINE')">
+              <svg viewBox="0 0 24 24"><line x1="4" y1="4" x2="20" y2="20" stroke-dasharray="4 2"></line></svg>
+              <span>Centerline</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="REVCLOUD" title="Revision Cloud (REVCLOUD)" onclick="window.cadApp.commands.startCommand('REVCLOUD')">
+              <svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+              <span>RevCloud</span>
+            </button>
+          </div>
+          <div class="panel-title">Dimensions & Marks</div>
+        </div>
+
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" title="Data Extraction Wizard (DATAEXTRACTION) - Export BOQ to CSV" onclick="window.cadApp.exportDataExtraction()">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Data Extract</span>
+            </button>
+            <button class="tool-btn-large" title="Bidirectional Data Link (DATALINK) - Link Excel / CSV Table" onclick="window.cadApp.importDataLink()">
+              <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+              <span>Data Link</span>
+            </button>
+          </div>
+          <div class="panel-title">Data Schedules</div>
+        </div>
+      </div>
+
+      <!-- 4. Parametric Panel Set -->
+      <div class="ribbon-group-set" data-panel="parametric" style="display: none;">
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <div class="tool-grid">
+              <button class="tool-btn-small" onclick="window.xcadParametric.addGeometricConstraint('HORIZONTAL', Array.from(window.cadApp.engine.selectedEntities)[0])">
+                <span>━ Horizontal</span>
+              </button>
+              <button class="tool-btn-small" onclick="window.xcadParametric.addGeometricConstraint('VERTICAL', Array.from(window.cadApp.engine.selectedEntities)[0])">
+                <span>┃ Vertical</span>
+              </button>
+              <button class="tool-btn-small" onclick="const s = Array.from(window.cadApp.engine.selectedEntities); window.xcadParametric.addGeometricConstraint('PARALLEL', s[0], s[1])">
+                <span>∥ Parallel</span>
+              </button>
+              <button class="tool-btn-small" onclick="const s = Array.from(window.cadApp.engine.selectedEntities); window.xcadParametric.addGeometricConstraint('PERPENDICULAR', s[0], s[1])">
+                <span>⊥ Perpend.</span>
+              </button>
+            </div>
+          </div>
+          <div class="panel-title">Geometric Constraints</div>
+        </div>
+
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" title="Open Parameters Manager (PARAMETERS)" onclick="window.cadApp.toggleParametersPalette()">
+              <svg viewBox="0 0 24 24"><path d="M4 21v-7"></path><path d="M4 10V3"></path><path d="M12 21v-9"></path><path d="M12 8V3"></path><path d="M20 21v-5"></path><path d="M20 12V3"></path><circle cx="4" cy="12" r="2"></circle><circle cx="12" cy="10" r="2"></circle><circle cx="20" cy="14" r="2"></circle></svg>
+              <span>Parameters</span>
+            </button>
+            <button class="tool-btn-large" title="Rectangular Array (ARRAYRECT)" onclick="const s = Array.from(window.cadApp.engine.selectedEntities); window.xcadParametric.createRectangularArray(s.length ? s : [window.cadApp.engine.entities[0]])">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <span>Rect Array</span>
+            </button>
+            <button class="tool-btn-large" title="Polar Array (ARRAYPOLAR)" onclick="const s = Array.from(window.cadApp.engine.selectedEntities); window.xcadParametric.createPolarArray(s.length ? s : [window.cadApp.engine.entities[0]], {x:0, y:0})">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="4" r="2"></circle><circle cx="12" cy="20" r="2"></circle><circle cx="4" cy="12" r="2"></circle><circle cx="20" cy="12" r="2"></circle></svg>
+              <span>Polar Array</span>
+            </button>
+          </div>
+          <div class="panel-title">Dynamic Arrays</div>
+        </div>
+      </div>
+
+      <!-- 5. GIS & Site Planning Panel Set -->
+      <div class="ribbon-group-set" data-panel="gis" style="display: none;">
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" title="Assign Geographic Reference (GEOGRAPHICLOCATION)" onclick="window.cadApp.openGisSettings()">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              <span>Geo Location</span>
+            </button>
+            <button class="tool-btn-large" title="Toggle Streaming Basemap" onclick="window.xcadGisMap.toggleBasemap()">
+              <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+              <span>Live Basemap</span>
+            </button>
+            <button class="tool-btn-large" title="Capture Static Map Underlay (MAPCAPTURE)" onclick="window.xcadGisMap.captureBasemap()">
+              <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              <span>Map Capture</span>
+            </button>
+          </div>
+          <div class="panel-title">GIS Basemaps</div>
+        </div>
+
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <div class="tool-grid">
+              <button class="tool-btn-small" onclick="window.xcadGisMap.toggleBasemap('SATELLITE')"><span>🛰️ Satellite</span></button>
+              <button class="tool-btn-small" onclick="window.xcadGisMap.toggleBasemap('OSM')"><span>🗺️ OpenStreetMap</span></button>
+              <button class="tool-btn-small" onclick="window.xcadGisMap.toggleBasemap('STREETS')"><span>🛣️ Streets</span></button>
+              <button class="tool-btn-small" onclick="window.xcadGisMap.toggleBasemap('DARK_GRAY')"><span>🌑 Dark Canvas</span></button>
+            </div>
+          </div>
+          <div class="panel-title">Basemap Styles</div>
+        </div>
+      </div>
+
+      <!-- 6. Review & Trace Panel Set -->
+      <div class="ribbon-group-set" data-panel="review" style="display: none;">
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" title="Trace Mode (TRACE) - Collaborative transparent review layer" onclick="window.cadApp.commands.toggleTraceMode()">
+              <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              <span>Trace Mode</span>
+            </button>
+            <button class="tool-btn-large" title="Drawing Compare (COMPARE) - Real-time visual diff" onclick="window.cadApp.commands.toggleCompareMode()">
+              <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M13 6h3a2 2 0 0 1 2 2v7"></path><line x1="6" y1="9" x2="6" y2="21"></line></svg>
+              <span>DWG Compare</span>
+            </button>
+            <button class="tool-btn-large" title="Activity Insights (What's Changed Event Log)" onclick="window.cadApp.toggleInsightsPalette()">
+              <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              <span>Insights</span>
+            </button>
+          </div>
+          <div class="panel-title">Collaborate & Review</div>
+        </div>
+      </div>
+
+      <!-- 7. Automation Panel Set -->
+      <div class="ribbon-group-set" data-panel="automation" style="display: none;">
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" title="AutoLISP & Script Console (VLISP)" onclick="window.cadApp.toggleLispConsole()">
+              <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              <span>AutoLISP IDE</span>
+            </button>
+          </div>
+          <div class="panel-title">Automation & LISP</div>
+        </div>
+      </div>
+
+      <!-- 8. Engineering Graphics (BMET21 Curriculum) Panel Set -->
+      <div class="ribbon-group-set" data-panel="eng-graphics" style="display: none;">
+        <!-- Unit I: Engineering Curves -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" data-cmd="CYCLOID" title="Cycloid: Locus of point on rolling circle" onclick="window.cadApp.commands.execute('CYCLOID')">
+              <svg viewBox="0 0 24 24"><path d="M2 18 C 6 6, 10 6, 14 18 C 16 12, 18 12, 22 18" fill="none" stroke="currentColor" stroke-width="2"/><line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-dasharray="2 2"/></svg>
+              <span>Cycloid</span>
+            </button>
+            <div class="tool-btn-col">
+              <button class="tool-btn-small" data-cmd="INVOLUTE" title="Involute of Circle (gear teeth)" onclick="window.cadApp.commands.execute('INVOLUTE')">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 16 C 16 16, 20 12, 20 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span>Involute</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="SPIRAL" title="Archimedean Spiral" onclick="window.cadApp.commands.execute('SPIRAL')">
+                <svg viewBox="0 0 24 24"><path d="M12 12 A 2 2 0 0 1 14 12 A 4 4 0 0 1 10 12 A 6 6 0 0 1 16 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span>Spiral</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="HELIX" title="2D Projected Helix" onclick="window.cadApp.commands.execute('HELIX')">
+                <svg viewBox="0 0 24 24"><path d="M4 18 C 8 10, 10 10, 14 18 C 18 10, 20 10, 22 18" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span>Helix</span>
+              </button>
+            </div>
+          </div>
+          <div class="panel-title">Engineering Curves</div>
+        </div>
+
+        <!-- Unit I: Scales & Lettering -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" data-cmd="SCALEPLAIN" title="Plain Scale: RF calculation & main sub-divisions" onclick="window.cadApp.commands.execute('SCALEPLAIN')">
+              <svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="8" rx="1"/><line x1="6" y1="8" x2="6" y2="16"/><line x1="10" y1="8" x2="10" y2="16"/><line x1="14" y1="8" x2="14" y2="16"/><line x1="18" y1="8" x2="18" y2="16"/></svg>
+              <span>Plain Scale</span>
+            </button>
+            <div class="tool-btn-col">
+              <button class="tool-btn-small" data-cmd="SCALEDIAGONAL" title="Diagonal Scale: 3 consecutive units (m, dm, cm)" onclick="window.cadApp.commands.execute('SCALEDIAGONAL')">
+                <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12"/><line x1="2" y1="18" x2="10" y2="6"/><line x1="10" y1="18" x2="18" y2="6"/></svg>
+                <span>Diagonal Scale</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="LETTERING" title="Single Stroke Lettering (BIS Standard)" onclick="window.cadApp.commands.execute('LETTERING')">
+                <svg viewBox="0 0 24 24"><polyline points="4 20 12 4 20 20"/><line x1="7" y1="14" x2="17" y2="14"/></svg>
+                <span>Lettering</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="TOGGLEDIMMODE" title="Toggle Dimensioning: Aligned vs Unidirectional" onclick="window.cadApp.commands.execute('TOGGLEDIMMODE')">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><polygon points="3,10 3,14 1,12"/><polygon points="21,10 21,14 23,12"/></svg>
+                <span>Dim Mode</span>
+              </button>
+            </div>
+          </div>
+          <div class="panel-title">Scales & Standards</div>
+        </div>
+
+        <!-- Unit II: Orthographic Projections (Points & Lines) -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" data-cmd="PROJPOINT" title="Projection of Points in 4 Quadrants (I, II, III, IV)" onclick="window.cadApp.commands.execute('PROJPOINT')">
+              <svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/><circle cx="17" cy="7" r="2" fill="currentColor"/></svg>
+              <span>Point Proj</span>
+            </button>
+            <div class="tool-btn-col">
+              <button class="tool-btn-small" data-cmd="PROJLINE" title="Line Projection: True Length, θ, φ, Apparent Lengths & Traces" onclick="window.cadApp.commands.execute('PROJLINE')">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="18" x2="21" y2="6" stroke="currentColor" stroke-width="2"/><line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="2 2"/></svg>
+                <span>Line AB Proj</span>
+              </button>
+              <button class="tool-btn-small" data-cmd="TOGGLEANGLE" title="Toggle 1st Angle vs 3rd Angle Projection" onclick="window.cadApp.commands.execute('TOGGLEANGLE')">
+                <svg viewBox="0 0 24 24"><circle cx="7" cy="12" r="4"/><line x1="13" y1="7" x2="21" y2="5"/><line x1="13" y1="17" x2="21" y2="19"/></svg>
+                <span id="proj-angle-btn-text">1st Angle</span>
+              </button>
+            </div>
+          </div>
+          <div class="panel-title">Projections (Unit II)</div>
+        </div>
+
+        <!-- Unit III: Surface Development -->
+        <div class="ribbon-panel">
+          <div class="panel-content">
+            <button class="tool-btn-large" data-cmd="DEVCYLINDER" title="Parallel-line Development: Cylinder (πD Stretch-out)" onclick="window.cadApp.commands.execute('DEVCYLINDER')">
+              <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12"/><circle cx="12" cy="2" r="2"/><circle cx="12" cy="22" r="2"/></svg>
+              <span>Cylinder Dev</span>
+            </button>
+            <button class="tool-btn-large" data-cmd="DEVCONE" title="Radial-line Development: Cone (Sector θ = 360° × R/L)" onclick="window.cadApp.commands.execute('DEVCONE')">
+              <svg viewBox="0 0 24 24"><path d="M12 3 L3 19 A 12 12 0 0 0 21 19 Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="21" r="2"/></svg>
+              <span>Cone Dev</span>
+            </button>
+          </div>
+          <div class="panel-title">Surface Development</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main CAD Viewport Canvas -->
+  <main id="viewport-container">
+    <canvas id="cad-canvas"></canvas>
+
+    <!-- Floating Dynamic Input cursor tooltip -->
+    <div id="dyn-input">0.00, 0.00</div>
+
+    <!-- XCAD 2D ViewCube -->
+    <div id="viewcube" title="XCAD 2D ViewCube - Top View (WCS)">
+      <div class="compass-n">▲ N</div>
+      <div class="cube-inner">
+        <div>TOP</div>
+        <div style="font-size: 8px; color: #38bdf8; margin-top: 1px;">WCS</div>
+      </div>
+    </div>
+
+    <!-- Floating Navigation Bar on Right -->
+    <div id="nav-bar" title="XCAD 2D Navigation Bar">
+      <button class="nav-bar-btn" title="Pan (P)" onclick="window.cadApp.commands.execute('P')">
+        <svg viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8M6 14v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6V11a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2"></path></svg>
+      </button>
+      <button class="nav-bar-btn" title="Zoom Extents (Z)" onclick="window.cadApp.commands.zoomExtents()">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </button>
+      <button class="nav-bar-btn" title="Zoom In (+)" onclick="window.cadApp.commands.zoomIn()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <button class="nav-bar-btn" title="Zoom Out (-)" onclick="window.cadApp.commands.zoomOut()">
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <button class="nav-bar-btn" title="Reset View Origin (0,0)" onclick="window.cadApp.commands.resetView()">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line></svg>
+      </button>
+    </div>
+
+    <!-- Floating Palettes -->
+    <!-- 1. Smart Blocks Counting Palette -->
+    <div id="xcad-count-palette" class="xcad-floating-palette">
+      <div class="palette-header">
+        <span>Smart Blocks: Object Count & Verification</span>
+        <button class="modal-close" onclick="window.cadApp.toggleCountPalette()">✕</button>
+      </div>
+      <div class="palette-body">
+        <div id="count-total-display" style="font-weight: 700; color: #cbd5e1; margin-bottom: 8px;">Total Counted Blocks: 0</div>
+        <table class="layer-table">
+          <thead>
+            <tr><th>Block Name</th><th>Count</th><th>Integrity</th><th>Action</th></tr>
+          </thead>
+          <tbody id="count-palette-tbody"></tbody>
+        </table>
+      </div>
+      <div class="palette-footer">
+        <button class="btn-small-action" onclick="window.xcadSmartBlocks.insertCountTable(60, 60)">+ Insert Count Table</button>
+      </div>
+    </div>
+
+    <!-- 2. Parameters Manager Palette -->
+    <div id="xcad-parameters-palette" class="xcad-floating-palette">
+      <div class="palette-header">
+        <span>Parameters Manager (2D Constraints)</span>
+        <button class="modal-close" onclick="window.cadApp.toggleParametersPalette()">✕</button>
+      </div>
+      <div class="palette-body">
+        <table class="layer-table">
+          <thead>
+            <tr><th>Name</th><th>Formula / Value</th><th>Evaluated</th><th>Description</th></tr>
+          </thead>
+          <tbody id="parameters-tbody"></tbody>
+        </table>
+      </div>
+      <div class="palette-footer">
+        <button class="btn-small-action" onclick="const n=prompt('Parameter Name:','d_new'); if(n) window.xcadParametric.setParam(n, prompt('Formula or value:','100'))">+ New Parameter</button>
+      </div>
+    </div>
+
+    <!-- 3. Activity Insights Palette -->
+    <div id="xcad-insights-palette" class="xcad-floating-palette">
+      <div class="palette-header">
+        <span>Activity Insights (Drawing Event Log)</span>
+        <button class="modal-close" onclick="window.cadApp.toggleInsightsPalette()">✕</button>
+      </div>
+      <div class="palette-body" id="insights-log-list"></div>
+    </div>
+
+    <!-- 4. AutoLISP Console Palette -->
+    <div id="xcad-lisp-palette" class="xcad-floating-palette" style="width: 440px;">
+      <div class="palette-header">
+        <span>AutoLISP IDE & Script Automation</span>
+        <button class="modal-close" onclick="window.cadApp.toggleLispConsole()">✕</button>
+      </div>
+      <div class="palette-body">
+        <textarea id="lisp-code-input" class="lisp-editor" placeholder="; Enter AutoLISP code here:&#10;(command &quot;LINE&quot; '(0 0) '(120 80) &quot;&quot;)&#10;(setq len (distance '(0 0) '(120 80)))&#10;(princ (strcat &quot;Length is &quot; (rtos len)))"></textarea>
+        <div style="margin-top: 6px; display: flex; gap: 6px;">
+          <button class="btn-small-action" style="background: #0078d4; color: #fff;" onclick="window.xcadLisp.run(document.getElementById('lisp-code-input').value)">▶ Run AutoLISP</button>
+          <button class="btn-small-action" onclick="document.getElementById('lisp-output').innerHTML=''">Clear Console</button>
+        </div>
+        <div id="lisp-output" class="lisp-output-box"></div>
+      </div>
+    </div>
+
+    <!-- Floating Quick Properties Inspector -->
+    <div id="quick-props-card" class="quick-props-card">
+      <div class="qp-header">
+        <div class="qp-title-row">
+          <span id="qp-title" class="qp-title">Selected Entity</span>
+          <span id="qp-info" class="qp-info">0.00 mm</span>
+        </div>
+        <button class="qp-close-btn" title="Deselect" onclick="window.cadApp.engine.selectedEntities.clear(); window.cadApp.engine.render(); window.cadApp.updateQuickProperties(); window.cadApp.updateCommandActionPills();">✕</button>
+      </div>
+      <div class="qp-body">
+        <div class="qp-field">
+          <label>Layer:</label>
+          <select id="qp-layer-select" class="qp-select" onchange="window.cadApp.changeSelectedLayer(this.value)">
+            <option value="0">0 (Geometry)</option>
+            <option value="dims">Dimensions</option>
+            <option value="hidden">Hidden</option>
+            <option value="center">Centerlines</option>
+            <option value="hatch">Hatches</option>
+            <option value="text">Text & Notes</option>
+            <option value="blocks">Smart Blocks</option>
+            <option value="trace">Trace Markups</option>
+          </select>
+        </div>
+        <div class="qp-field">
+          <label>Quick Color:</label>
+          <div class="qp-color-palette">
+            <button class="qp-color-dot" style="background:#ffffff;" title="White" onclick="window.cadApp.setQuickColor('#ffffff')"></button>
+            <button class="qp-color-dot" style="background:#00e5ff;" title="Cyan" onclick="window.cadApp.setQuickColor('#00e5ff')"></button>
+            <button class="qp-color-dot" style="background:#ffea00;" title="Yellow" onclick="window.cadApp.setQuickColor('#ffea00')"></button>
+            <button class="qp-color-dot" style="background:#ff1744;" title="Red" onclick="window.cadApp.setQuickColor('#ff1744')"></button>
+            <button class="qp-color-dot" style="background:#00e676;" title="Green" onclick="window.cadApp.setQuickColor('#00e676')"></button>
+            <button class="qp-color-dot" style="background:#e040fb;" title="Magenta" onclick="window.cadApp.setQuickColor('#e040fb')"></button>
+          </div>
+        </div>
+        <div class="qp-actions-row">
+          <button class="btn-qp-action" onclick="window.cadApp.commands.execute('CO')">⧉ Copy</button>
+          <button class="btn-qp-action" onclick="window.cadApp.commands.execute('M')">↔ Move</button>
+          <button class="btn-qp-action" onclick="window.cadApp.commands.execute('RO')">⟲ Rotate</button>
+          <button class="btn-qp-action" onclick="window.cadApp.commands.execute('SC')">⤢ Scale</button>
+          <button class="btn-qp-action" onclick="window.cadApp.commands.execute('MI')">⧎ Mirror</button>
+          <button class="btn-qp-action" onclick="window.cadApp.commands.execute('X')">💥 Explode</button>
+          <button class="btn-qp-action qp-action-delete" onclick="window.cadApp.commands.execute('E')">🗑️ Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Command Line Window -->
+    <div id="command-container">
+      <div id="cmd-autocomplete"></div>
+      <div id="cmd-history">
+        <div class="cmd-history-line">XCAD 2D v2026 initialized. AI Smart Blocks, GIS Basemaps, AutoLISP, and Quick Measure active.</div>
+        <div class="cmd-history-line">Type L for Line, H for Hatch, BCONVERT for Smart Blocks, QM for Quick Measure, or GEO for GIS.</div>
+      </div>
+      <div id="cmd-input-row">
+        <div class="cmd-drag-handle" title="Command Line Window"></div>
+        <span id="cmd-prompt-label" class="cmd-prompt-label">Command:</span>
+        <div id="cmd-action-pills" class="cmd-action-pills"></div>
+        <input type="text" id="cmd-input" placeholder="Type a command e.g. L, PL, C, REC, H, M, TR, BCONVERT, or AutoLISP expr..." autofocus autocomplete="off" spellcheck="false" />
+      </div>
+    </div>
+  </main>
+
+  <!-- Layout Tabs Bar (Model / Layout1 / Layout2) -->
+  <div id="layout-tabs-bar">
+    <button class="layout-tab active" data-tab="model" onclick="window.cadApp.switchLayout('model')">Model</button>
+    <button class="layout-tab" data-tab="layout1" onclick="window.cadApp.switchLayout('layout1')">Layout1</button>
+    <button class="layout-tab" data-tab="layout2" onclick="window.cadApp.switchLayout('layout2')">Layout2</button>
+    <button class="layout-tab" title="Add New Layout Tab" onclick="window.cadApp.newLayout()">+</button>
+  </div>
+
+  <!-- Bottom Drafting Status Bar (F1-F12 + GIS + QM) -->
+  <footer id="status-bar">
+    <div class="status-left">
+      <div id="coord-display" class="coord-display">X: 0.000  Y: 0.000  Z: 0.000</div>
+      <div id="pill-grid" class="draft-pill active" title="Grid Display (F7)" onclick="window.cadApp.toggleDraft('grid')">GRID</div>
+      <div id="pill-snap" class="draft-pill" title="Grid Snap (F9)" onclick="window.cadApp.toggleDraft('snap')">SNAP</div>
+      <div id="pill-ortho" class="draft-pill" title="Ortho Mode (F8)" onclick="window.cadApp.toggleDraft('ortho')">ORTHO</div>
+      <div id="pill-polar" class="draft-pill active" title="Polar Tracking (F10)" onclick="window.cadApp.toggleDraft('polar')">POLAR</div>
+      <div id="pill-osnap" class="draft-pill active" title="Object Snap (F3)" onclick="window.cadApp.toggleDraft('osnap')">OSNAP</div>
+      <div id="pill-dyn" class="draft-pill active" title="Dynamic Input (F12)" onclick="window.cadApp.toggleDraft('dyn')">DYN</div>
+      <div id="pill-qm" class="draft-pill" title="Quick Measure (QM) - Neon Proximity Overlays" onclick="window.cadApp.commands.toggleQuickMeasure()">QUICK MEASURE</div>
+      <div id="pill-gis" class="draft-pill" title="GIS Streaming Basemap" onclick="window.xcadGisMap.toggleBasemap()">GIS MAP</div>
+    </div>
+    <div class="status-center">
+      <div id="beginner-tip-banner" class="beginner-tip-banner" title="Click for Next Practical Tip" onclick="window.cadApp.nextTip()">
+        <span id="beginner-tip-text">💡 Tip: Drag any selected object to move it directly across the canvas!</span>
+        <span class="tip-next-btn">Next Tip ▶</span>
+      </div>
+    </div>
+    <div class="status-right">
+      <span style="color: #64748b; font-size: 10px;">Model Space · 1:1 Scale · WGS84 GPS Sync</span>
+      <div id="pill-clean-screen" class="clean-screen-pill" title="Clean Screen Fullscreen (CTRL+0 / F11)" onclick="window.cadApp.toggleFullscreen()">⛶ CLEAN SCREEN</div>
+    </div>
+  </footer>
+
+  <!-- Smart Blocks BCONVERT Visual Gallery Modal -->
+  <div id="bconvert-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span>Smart Blocks: AI Search & Convert Gallery</span>
+        <button class="modal-close" onclick="window.cadApp.closeBConvertGallery()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 12px; font-size: 12px; color: #cbd5e1;">
+          Autodesk AI scanned the model space for matching geometric signatures and detected identical raw linework clusters.
+        </p>
+        <div style="background: #151a21; padding: 12px; border-radius: 4px; border: 1px solid #374151; margin-bottom: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: #38bdf8;" id="bconvert-blockname">BLOCK_01</div>
+          <div style="font-size: 11px; color: #22c55e; margin-top: 4px;" id="bconvert-count">4 candidates found</div>
+          <div style="font-size: 10.5px; color: #94a3b8; margin-top: 4px;">Nearby text annotations automatically isolated into editable Block Attributes (TAG, SIZE).</div>
+        </div>
+        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+          <button class="btn-small-action" onclick="window.cadApp.closeBConvertGallery()">Cancel</button>
+          <button class="btn-small-action" style="background: #0078d4; color: #fff;" onclick="window.cadApp.confirmBConvert()">✓ Convert All Matches</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layer Properties Manager Modal -->
+  <div id="layer-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span>Layer Properties Manager</span>
+        <button class="modal-close" onclick="window.cadApp.closeLayerManager()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 12px; display: flex; gap: 8px;">
+          <button class="btn-small-action" onclick="window.cadApp.addNewLayer()">+ New Layer</button>
+        </div>
+        <table class="layer-table">
+          <thead>
+            <tr><th>Status / Name</th><th>Color</th><th>On / Visible</th><th>Action</th></tr>
+          </thead>
+          <tbody id="layer-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ready-Made Engineering Templates Modal -->
+  <div id="templates-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 720px;">
+      <div class="modal-header">
+        <span style="font-size: 14.5px; font-weight: 700; color: #f1f5f9;">📂 Pre-Loaded Engineering & Architectural Templates</span>
+        <button class="modal-close" onclick="window.cadApp.closeTemplatesModal()">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 16px 20px;">
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">
+          Select a template to instantly start practicing with walls, doors, windows, columns, site boundaries, and dimensions:
+        </p>
+        <div class="template-grid">
+          <!-- 1. Architectural 2BHK -->
+          <div class="template-card" onclick="window.cadApp.loadTemplate('floorplan')">
+            <div class="template-icon">🏠</div>
+            <div class="template-title">2BHK Architectural Floor Plan</div>
+            <div class="template-desc">Living/Dining, Master Bed, Bed 2, Kitchen, Bath & Balcony with doors, windows, flooring hatch & dimensions.</div>
+            <button class="template-btn">Load Floor Plan</button>
+          </div>
+          <!-- 2. Civil Site Plan -->
+          <div class="template-card" onclick="window.cadApp.loadTemplate('civilsite')">
+            <div class="template-icon">📐</div>
+            <div class="template-title">Civil Survey & Site Boundary</div>
+            <div class="template-desc">Parcel property boundaries, setback lines, access road alignment, survey benchmarks BM-01..05 & North arrow.</div>
+            <button class="template-btn">Load Civil Site</button>
+          </div>
+          <!-- 3. Mechanical Bearing Part -->
+          <div class="template-card" onclick="window.cadApp.loadTemplate('mechanical')">
+            <div class="template-icon">⚙️</div>
+            <div class="template-title">Mechanical Bearing Flange</div>
+            <div class="template-desc">Precision circular flange, PCD bolt circle, 4 bolt holes, shaft keyway & associative centerlines.</div>
+            <button class="template-btn">Load Mechanical</button>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 14px; gap: 8px;">
+          <button class="btn-small-action" style="color: #ef4444;" onclick="window.cadApp.loadTemplate('clear')">Clear Canvas</button>
+          <button class="btn-small-action" onclick="window.cadApp.closeTemplatesModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help & Shortcuts Modal -->
+  <div id="help-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 740px;">
+      <div class="modal-header">
+        <span style="font-size: 14.5px; font-weight: 700; color: #f1f5f9;">❓ XCAD 2D - Quick Start & AutoCAD Shortcuts Guide</span>
+        <button class="modal-close" onclick="window.cadApp.closeHelpModal()">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 16px 20px; max-height: 75vh; overflow-y: auto;">
+        <!-- Mouse Controls Guide -->
+        <div style="background: #181d24; border: 1px solid #2d3748; border-radius: 6px; padding: 12px; margin-bottom: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 6px;">🖱️ Mouse & Trackpad Gestures (Super Easy)</div>
+          <table class="help-table">
+            <tr><td><strong>Left Click</strong></td><td>Click on empty canvas to start selection, or click an entity to select it.</td></tr>
+            <tr><td><strong>Auto-Drag</strong></td><td>Click on any selected object and drag your mouse to move it across the canvas!</td></tr>
+            <tr><td><strong>Right Click</strong></td><td>Finishes the active command (<kbd>Enter</kbd>) or repeats the last command!</td></tr>
+            <tr><td><strong>Scroll Wheel</strong></td><td>Zoom in / zoom out anchored to your cursor position.</td></tr>
+            <tr><td><strong>Middle-Click Drag</strong></td><td>Pan your viewport across the infinite CAD world.</td></tr>
+          </table>
+        </div>
+
+        <!-- 2 Column Shortcuts Table -->
+        <div class="help-grid">
+          <div class="help-card">
+            <div class="help-card-title">✏️ Essential Draw Tools</div>
+            <table class="help-table">
+              <tr><td><kbd>L</kbd></td><td>Line (straight connected lines)</td></tr>
+              <tr><td><kbd>PL</kbd></td><td>Polyline (continuous; type <kbd>C</kbd> to close)</td></tr>
+              <tr><td><kbd>C</kbd></td><td>Circle (center + radius)</td></tr>
+              <tr><td><kbd>REC</kbd></td><td>Rectangle (two corner points)</td></tr>
+              <tr><td><kbd>A</kbd></td><td>3-Point Arc</td></tr>
+              <tr><td><kbd>H</kbd></td><td>Hatch (boundary-free & path fill)</td></tr>
+              <tr><td><kbd>I</kbd></td><td>Insert Smart Block (Door, Window, Column)</td></tr>
+            </table>
+          </div>
+
+          <div class="help-card">
+            <div class="help-card-title">🛠️ Modify & AutoCAD Shortcuts</div>
+            <table class="help-table">
+              <tr><td><kbd>M</kbd> / <kbd>CO</kbd></td><td>Move / Copy selected objects</td></tr>
+              <tr><td><kbd>RO</kbd> / <kbd>SC</kbd></td><td>Rotate / Scale around base point</td></tr>
+              <tr><td><kbd>MI</kbd> / <kbd>F</kbd></td><td>Mirror across axis / Fillet corners</td></tr>
+              <tr><td><kbd>X</kbd> / <kbd>J</kbd></td><td>Explode blocks or plines / Join lines</td></tr>
+              <tr><td><kbd>TR</kbd> / <kbd>EX</kbd></td><td>Quick Trim / Extend (<kbd>Shift</kbd> flips)</td></tr>
+              <tr><td><kbd>DLI</kbd> / <kbd>DRA</kbd></td><td>Linear Dimension / Radius Dimension</td></tr>
+              <tr><td><kbd>Spacebar</kbd></td><td>Acts as <kbd>Enter</kbd> (finishes / repeats command)</td></tr>
+              <tr><td><kbd>DEL</kbd></td><td>Delete selected objects</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Status Bar Function Keys -->
+        <div class="help-card" style="margin-top: 14px;">
+          <div class="help-card-title">⌨️ Function Keys & Fullscreen</div>
+          <table class="help-table">
+            <tr><td><kbd>F3</kbd></td><td>Toggle OSNAP (Endpoint, Midpoint, Center, Centroid)</td></tr>
+            <tr><td><kbd>F8</kbd></td><td>Toggle ORTHO mode (locks cursor strictly to horizontal & vertical)</td></tr>
+            <tr><td><kbd>F10</kbd></td><td>Toggle Polar Tracking (15°, 30°, 45° alignment rays)</td></tr>
+            <tr><td><kbd>F12</kbd></td><td>Toggle Dynamic Input (heads-up coordinate display near crosshair)</td></tr>
+            <tr><td><kbd>F11</kbd> or <kbd>CTRL+0</kbd></td><td>CleanScreen Fullscreen Mode</td></tr>
+            <tr><td><kbd>U</kbd> / <kbd>CTRL+Z</kbd></td><td>Undo last action</td></tr>
+            <tr><td><kbd>REDO</kbd> / <kbd>CTRL+Y</kbd></td><td>Redo action</td></tr>
+          </table>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+          <button class="btn-small-action" style="background: #0078d4; color: #fff;" onclick="window.cadApp.closeHelpModal()">Got It!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- XCAD 2D Architecture Scripts -->
+  <script src="js/dxf-exporter.js"></script>
+  <script src="js/xcad-templates.js"></script>
+  <script src="js/xcad-ai-blocks.js"></script>
+  <script src="js/xcad-gis-map.js"></script>
+  <script src="js/xcad-parametric.js"></script>
+  <script src="js/xcad-lisp.js"></script>
+  <script src="js/xcad-engineering-graphics.js"></script>
+  <script src="js/cad-engine.js"></script>
+  <script src="js/cad-commands.js"></script>
+  <script src="js/cad-ui.js"></script>
+  <script>
+    // Boot XCAD 2D
+    window.addEventListener("DOMContentLoaded", () => {
+      window.cadApp = new CadUI();
+      if ('serviceWorker' in navigator && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
